@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:42:04 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/17 20:26:52 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/09/23 07:53:13 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	get_map_size(t_map *map, char *line, int lines_readed)
 		if (!(ft_isspace(line[j]) || line[j] == '1' || line[j] == '0'
 				|| ft_is_coord(line[j])))
 			return (ft_putendl_fd(BAD_DATA_FORMAT, 2), 1);
-		if (line[j] == '0' || ft_isspace(line[j]))
+		if (line[j] == '0' || ft_is_coord(line[j]))
 			map->num_spaces = map->num_spaces + 1;
         if (ft_is_coord(line[j]))
         {

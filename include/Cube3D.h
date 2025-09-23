@@ -3,7 +3,7 @@
 
 # include "libft.h"
 # include "mlx.h"
-# include <X11/X.h>
+//# include <X11/X.h>
 # include <fcntl.h>
 
 # define ERR_NUM_ARGS "Invalid number of arguments"

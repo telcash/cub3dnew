@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_coords.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 14:09:49 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/17 20:48:58 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/09/23 07:50:13 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ static int verify_map_nav(t_map *map)
 
 static void flood_fill(t_map *map, int row, int col, int *i)
 {
-    printf("row: %d, col: %d\n", row, col);
     if (row < 0  || row > (int)map->h - 2 || col < 0 || col > (int)ft_strlen(map->coords[row]) - 2)
         return ;
     if (map->coords[row][col] == '0' || ft_is_coord(map->coords[row][col]))
     {
-        *i = *i + 1;
+        map->coords[row][col] = '-';
+        (*i)++;
         flood_fill(map, row - 1, col, i);
         flood_fill(map, row + 1, col, i);
         flood_fill(map, row, col - 1, i);
@@ -78,6 +78,7 @@ static int verify_map_nav(t_map *map)
     i= 0;
 
     flood_fill(map, map->player->row, map->player->col, &i);
+    printf("Num spaces: %d, flood fill: %d\n", map->num_spaces, i);
     if (i < map->num_spaces)
         return (1);
     return (0);
