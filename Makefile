@@ -20,7 +20,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLX = $(MLX_DIR)/libmlx.a
 
 SRCS = $(addprefix $(SRC_DIR)/, main.c) \
-			$(addprefix $(SRC_DIR)/init/, init_data.c) \
+			$(addprefix $(SRC_DIR)/init/, init_data.c init_game.c) \
 			$(addprefix $(SRC_DIR)/parse/, parse_map.c get_map_data.c get_texture.c get_color.c get_map_coords.c) \
 			$(addprefix $(SRC_DIR)/free/, free_data.c) \
 			$(addprefix $(SRC_DIR)/utils/, utils.c) \

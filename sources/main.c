@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/24 16:31:05 by dfernan3          #+#    #+#             */
-/*   Updated: 2025/09/17 19:40:13 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:57:34 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	main(int ac, char **av)
 	data = init_data(av[1]);
 	if (!data)
 		return (1);
-	print_test(data);
+	//print_test(data);
+	init_game(data);
 	return (0);
 }

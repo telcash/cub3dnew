@@ -5,6 +5,16 @@
 # include "mlx.h"
 //# include <X11/X.h>
 # include <fcntl.h>
+# include <math.h>
+# include <stdbool.h>
+
+# define WIDTH 1288
+# define HEIGHT 720
+
+# define W 119
+# define A 97
+# define S 115
+# define D 100
 
 # define ERR_NUM_ARGS "Invalid number of arguments"
 # define ERR_INIT_DATA "Error initializing data"
@@ -38,6 +48,16 @@ typedef struct s_player
     int row;
     int col;
     char view;
+    double pos_x;
+    double pos_y;
+    double dir_x;
+    double dir_y;
+    double plane_x;
+    double plane_y;
+    bool key_up;
+    bool key_down;
+    bool key_left;
+    bool key_right;
 } t_player;
 
 typedef struct s_map
@@ -60,10 +80,16 @@ typedef struct s_data
 {
     void *mlx;
     void *win;
+    void *img;
+    char *addr;
+    int bpp;
+    int line_len;
+    int endian;
     t_map   *map;
 }   t_data;
 
 t_data *init_data(char *file);
+void init_game(t_data *data);
 int parse_map(t_map *map, char *file);
 void free_data(t_data *data);
 void	free_split(char **split);

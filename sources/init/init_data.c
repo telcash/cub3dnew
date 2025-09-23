@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:04:47 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/17 19:39:34 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:43:20 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ static t_player *init_player()
     player->col = 0;
     player->row = 0;
     player->view = '\0';
+    player->pos_x = 0.0;
+    player->pos_y = 0.0;
+    player->dir_x = 0.0;
+    player->dir_y = 0.0;
+    player->plane_x = 0.0;
+    player->plane_y = 0.0;
+    player->key_up = false;
+    player->key_down = false;
+    player->key_left = false;
+    player->key_right = false;
     return (player);
 }
 
@@ -43,7 +53,6 @@ static t_map *init_map()
     map->f = NULL;
     map->c = NULL;
     map->coords = NULL;
-    map->player = NULL;
     map->player = init_player();
     if (!map->player)
         return (NULL);

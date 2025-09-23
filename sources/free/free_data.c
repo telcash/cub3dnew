@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 12:04:25 by csalazar          #+#    #+#             */
-/*   Updated: 2025/07/25 15:03:19 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/09/23 09:17:38 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void free_data(t_data *data)
             free(data->map->f);
         if (data->map->c)
             free(data->map->c);
-        if (data->map->player)
-            free(data->map->player);
         if (data->map->coords)
             free_split(data->map->coords);
+        if (data->map->player)
+            free(data->map->player);
         free(data->map);
     }
     if (data)

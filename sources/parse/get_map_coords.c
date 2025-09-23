@@ -6,7 +6,7 @@
 /*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 14:09:49 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/23 07:50:13 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/09/23 09:46:02 by carlossalaz      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static int verify_map_nav(t_map *map)
     i= 0;
 
     flood_fill(map, map->player->row, map->player->col, &i);
-    printf("Num spaces: %d, flood fill: %d\n", map->num_spaces, i);
     if (i < map->num_spaces)
         return (1);
     return (0);
