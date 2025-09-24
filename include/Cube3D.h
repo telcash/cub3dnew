@@ -3,7 +3,7 @@
 
 # include "libft.h"
 # include "mlx.h"
-//# include <X11/X.h>
+# include <X11/X.h>
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
@@ -15,6 +15,8 @@
 # define A 97
 # define S 115
 # define D 100
+# define KEY_ESC 65307
+# define KEY_Q 113
 
 # define ERR_NUM_ARGS "Invalid number of arguments"
 # define ERR_INIT_DATA "Error initializing data"

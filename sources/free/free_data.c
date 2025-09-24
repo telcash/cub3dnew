@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
+/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 12:04:25 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/23 09:17:38 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/09/24 17:39:45 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ void free_data(t_data *data)
             free(data->map->player);
         free(data->map);
     }
+    mlx_destroy_window(data->mlx, data->win);
+	mlx_destroy_display(data->mlx);
+	free(data->mlx);
+    //ft_destroy_images(t_game *game)
     if (data)
         free(data);
     return ;

@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
+/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 08:15:16 by carlossalaz       #+#    #+#             */
-/*   Updated: 2025/09/23 09:58:46 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/09/24 17:35:31 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Cube3D.h"
 
+int	ft_close_game(t_data *data)
+{
+	free_data(data);
+	exit(EXIT_FAILURE);
+}
 void set_player_init_pos(t_data *data)
 {
     data->map->player->pos_x = data->map->player->col + 0.5;
@@ -46,29 +51,31 @@ void set_player_init_pos(t_data *data)
     }
 }
 
-int key_press(int keycode, t_player *player)
+int key_press(int keycode, t_data *data)
 {
     if (keycode == W)
-        player->key_up = true;
+        data->map->player->key_up = true;
     if (keycode == A)
-        player->key_left = true;
+        data->map->player->key_left = true;
     if (keycode == S)
-        player->key_down = true;
+        data->map->player->key_down = true;
     if (keycode == D)
-        player->key_right = true;
+        data->map->player->key_right = true;
+    if (keycode == KEY_ESC || keycode == KEY_Q)
+		ft_close_game(data);
     return (0);
 }
 
-int key_realase(int keycode, t_player *player)
+int key_realase(int keycode, t_data *data)
 {
     if (keycode == W)
-        player->key_up = false;
+        data->map->player->key_up = false;
     if (keycode == A)
-        player->key_left = false;
+        data->map->player->key_left = false;
     if (keycode == S)
-        player->key_down = false;
+        data->map->player->key_down = false;
     if (keycode == D)
-        player->key_right = false;
+        data->map->player->key_right = false;
     return (0);
 }
 
@@ -167,7 +174,8 @@ void init_game(t_data *data)
 {
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
     set_player_init_pos(data);
-    mlx_hook(data->win, 2, 1L<<0, key_press, data->map->player);
-    mlx_hook(data->win, 3, 1L<<1, key_realase, data->map->player);
-    mlx_loop_hook(data ->mlx, draw_loop, data);
+    mlx_hook(data->win, 2, 1L<<0, key_press, data);
+    mlx_hook(data->win, 3, 1L<<1, key_realase, data);
+    mlx_loop_hook(data->mlx, draw_loop, data);
+    mlx_loop(data->mlx);
 }

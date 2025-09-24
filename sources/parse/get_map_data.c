@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_data.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
+/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/23 10:42:04 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/23 09:44:25 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/09/24 16:54:48 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	get_map_data(t_map *map, char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (ft_putendl_fd(ERR_OPEN_FILE, 2), 1);
-		line = get_next_line(fd);
+	line = get_next_line(fd);
 	while (line)
 	{
 		if (get_data_from_line(map, line, &is_coords, ++lines_readed))

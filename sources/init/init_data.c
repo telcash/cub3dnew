@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
+/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:04:47 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/23 09:43:20 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/09/24 17:19:33 by csalazar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ t_data *init_data(char *file)
     data = malloc(sizeof(t_data));
     if (!data)
         return (ft_putendl_fd(ERR_MALLOC_DATA, 2), NULL);
-    data->mlx = NULL;
-    data->win = NULL;
+    data->mlx = mlx_init();
+    data->win = mlx_new_window(data->mlx, WIDTH, HEIGHT, "Cube3D");
+    data->img = mlx_new_image(data->mlx, WIDTH, HEIGHT);
+    data->addr = mlx_get_data_addr(data->img, &data->bpp, &data->line_len, &data->endian);
     data->map = NULL;
     data->map = init_map();
     if (!data->map || parse_map(data->map, file))
