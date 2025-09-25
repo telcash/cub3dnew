@@ -61,6 +61,10 @@ int key_press(int keycode, t_data *data)
         data->map->player->key_down = true;
     if (keycode == D)
         data->map->player->key_right = true;
+    if (keycode == LEFT)
+        data->map->player->left_rotate = true;
+    if (keycode == RIGHT)
+        data->map->player->right_rotate = true;
     if (keycode == KEY_ESC || keycode == KEY_Q)
 		ft_close_game(data);
     return (0);
@@ -76,22 +80,48 @@ int key_realase(int keycode, t_data *data)
         data->map->player->key_down = false;
     if (keycode == D)
         data->map->player->key_right = false;
+    if (keycode == LEFT)
+        data->map->player->left_rotate = false;
+    if (keycode == RIGHT)
+        data->map->player->right_rotate = false;
     return (0);
 }
 
 void move_player(t_player *player)
 {
-    int speed;
+    int speed = 3;
+    float angle_speed = 0.03;
+    float cos_angle = cos(player->angle);
+    float sin_angle = sin(player->angle);
 
-    speed = 5;
+    if (player->left_rotate)
+        player->angle -= angle_speed;
+    if (player->right_rotate)
+        player->angle += angle_speed;
+    if (player->angle > 2 * PI)
+        player->angle = 0;
+    if (player->angle < 0)
+        player->angle = 2 * PI;
     if (player->key_up)
-        player->pos_y -= speed;
+    {
+        player->pos_x += cos_angle * speed;
+        player->pos_y += sin_angle * speed;
+    }
     if (player->key_down)
-        player->pos_y += speed;
-    if (player->key_right)
-        player->pos_x += speed;
+    {
+        player->pos_x -= cos_angle * speed;
+        player->pos_y -= sin_angle * speed;
+    }
     if (player->key_left)
-        player->pos_x -= speed;
+    {
+        player->pos_x += sin_angle * speed;
+        player->pos_y -= cos_angle * speed;
+    }
+    if (player->key_right)
+    {
+        player->pos_x -= sin_angle * speed;
+        player->pos_y += cos_angle * speed;
+    }
 }
 
 void put_pixel(int x, int y, int color, t_data *data) //dibuja pixel con el color dado
@@ -161,12 +191,32 @@ void draw_square(int x, int y, int size, int color, t_data *data) //dibuja un cu
 	}
 }
 
+void draw_map(t_data *data)
+{
+    char **map = data->map->coords;
+    int color = 0x0000FF;
+    int y = 0;
+
+    while (map[y])
+    {
+        int x = 0;
+        while (map[y][x])
+        {
+            if (map[y][x] == '1')
+                draw_square(x * BLOCK, y * BLOCK, BLOCK, color, data);
+            x++;
+        }
+        y++;
+    }
+}
+
 int draw_loop(t_data *data)
 {
 	move_player(data->map->player);
 	clear_image(data);
 	draw_square(data->map->player->pos_x, data->map ->player->pos_y, 10, 0x00FF00, data);
-	mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
+	draw_map(data);
+    mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
 

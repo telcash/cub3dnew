@@ -7,9 +7,15 @@
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
+# include <stdlib.h>
+# include <stdio.h>
 
 # define WIDTH 1288
 # define HEIGHT 720
+# define BLOCK 32 //bloque 32 pixeles
+# define DEBUG 0
+
+# define PI 3.14159265359
 
 # define W 119
 # define A 97
@@ -17,6 +23,8 @@
 # define D 100
 # define KEY_ESC 65307
 # define KEY_Q 113
+# define RIGHT 65363
+# define LEFT 65361 
 
 # define ERR_NUM_ARGS "Invalid number of arguments"
 # define ERR_INIT_DATA "Error initializing data"
@@ -60,6 +68,9 @@ typedef struct s_player
     bool key_down;
     bool key_left;
     bool key_right;
+    bool left_rotate;
+    bool right_rotate;
+    float angle;
 } t_player;
 
 typedef struct s_map
@@ -88,6 +99,7 @@ typedef struct s_data
     int line_len;
     int endian;
     t_map   *map;
+    t_map *map1;
 }   t_data;
 
 t_data *init_data(char *file);
