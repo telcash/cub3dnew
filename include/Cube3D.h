@@ -13,7 +13,7 @@
 # define WIDTH 1288
 # define HEIGHT 720
 # define BLOCK 32 //bloque 32 pixeles
-# define DEBUG 0
+# define DEBUG 1
 
 # define PI 3.14159265359
 

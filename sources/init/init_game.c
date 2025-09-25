@@ -94,19 +94,14 @@ void move_player(t_player *player)
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
 
-    // Rotación
     if (player->left_rotate)
         player->angle -= angle_speed;
     if (player->right_rotate)
         player->angle += angle_speed;
-
-    // Normalizar ángulo entre 0 y 2π
     if (player->angle > 2 * PI)
-        player->angle -= 2 * PI;
+        player->angle = 0;
     if (player->angle < 0)
-        player->angle += 2 * PI;
-
-    // Movimiento adelante/atrás
+        player->angle = 2 * PI;
     if (player->key_up)
     {
         player->pos_x += cos_angle * speed;
@@ -117,20 +112,17 @@ void move_player(t_player *player)
         player->pos_x -= cos_angle * speed;
         player->pos_y -= sin_angle * speed;
     }
-
-    // Movimiento lateral (strafe)
     if (player->key_left)
-    {
-        player->pos_x -= sin_angle * speed;
-        player->pos_y += cos_angle * speed;
-    }
-    if (player->key_right)
     {
         player->pos_x += sin_angle * speed;
         player->pos_y -= cos_angle * speed;
     }
+    if (player->key_right)
+    {
+        player->pos_x -= sin_angle * speed;
+        player->pos_y += cos_angle * speed;
+    }
 }
-
 
 void put_pixel(int x, int y, int color, t_data *data) //dibuja pixel con el color dado
 {
@@ -199,6 +191,19 @@ void draw_square(int x, int y, int size, int color, t_data *data) //dibuja un cu
 	}
 }
 
+float distance(float x, float y){
+    return sqrt(x * x + y * y);
+}
+
+float fixed_dist(float x1, float y1, float x2, float y2, t_data *data)
+{
+    float delta_x = x2 - x1;
+    float delta_y = y2 - y1;
+    float angle = atan2(delta_y, delta_x) - data->map->player->angle;
+    float fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
 void draw_map(t_data *data)
 {
     char **map = data->map->coords;
@@ -230,27 +235,61 @@ bool touch(float px, float py, t_data *data)
     return false;
 }
 
-int draw_loop(t_data *data)
+// raycasting functions
+void draw_line(t_player *player, t_data *data, float start_x, int i)
 {
-    t_player *player = data->map->player;
     float ray_x;
     float ray_y;
     float cos_angle;
     float sin_angle;
 
-	move_player(player);
-	clear_image(data);
-    draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, data);
-	draw_map(data);
-	ray_x = player->pos_x;
+    ray_x = player->pos_x;
     ray_y = player->pos_y;
-    cos_angle = cos(player->angle);
-    sin_angle = sin(player->angle);
+    cos_angle = cos(start_x);
+    sin_angle = sin(start_x);
     while(!touch(ray_x, ray_y, data))
     {
-        put_pixel(ray_x, ray_y, 0xFF0000, data);
+        if (DEBUG)
+            put_pixel(ray_x, ray_y, 0xFF0000, data);
         ray_x += cos_angle;
         ray_y += sin_angle;
+    }
+    if(!DEBUG)
+    {
+        float dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, data);
+        float height = (BLOCK / dist) * (WIDTH / 2);
+        int start_y = (HEIGHT - height) / 2;
+        int end = start_y + height;
+        while(start_y < end)
+        {
+            put_pixel(i, start_y, 255, data);
+            start_y++;
+        }
+    }
+}
+
+int draw_loop(t_data *data)
+{
+    t_player *player = data->map->player;
+    float fraction;
+    float start_x;
+    int i;
+
+	move_player(player);
+	clear_image(data);
+    if (DEBUG)
+    {
+        draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, data);
+        draw_map(data);
+    }
+    fraction = PI / 3 / WIDTH;
+    start_x = player->angle - PI / 6;
+    i = 0;
+    while(i < WIDTH)
+    {
+        draw_line(player, data, start_x, i);
+        start_x += fraction;
+        i++;
     }
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);

@@ -22,16 +22,19 @@ static t_player *init_player()
     player->col = 0;
     player->row = 0;
     player->view = '\0';
-    player->pos_x = 0.0;
-    player->pos_y = 0.0;
+    player->pos_x = WIDTH / 2;
+    player->pos_y = HEIGHT / 2;
     player->dir_x = 0.0;
     player->dir_y = 0.0;
     player->plane_x = 0.0;
     player->plane_y = 0.0;
+    player->angle = PI / 2;
     player->key_up = false;
     player->key_down = false;
     player->key_left = false;
     player->key_right = false;
+    player->left_rotate = false;
+    player->right_rotate = false;
     return (player);
 }
 
