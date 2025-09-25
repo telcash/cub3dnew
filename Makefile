@@ -32,7 +32,7 @@ all: $(LIBFT) $(NAME) $(EXE)
 
 $(NAME): 	$(LIBFT) $(MLX) $(OBJS)
 			@mkdir -p $(OBJ_DIR)
-			$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MINILIBX_FLAGS) -L$(MLX_DIR) -o $(NAME)
+			@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX) $(MINILIBX_FLAGS) -L$(MLX_DIR) -o $(NAME)
 			@echo "$(NAME): $(GREEN)$(NAME) was compiled.$(RESET)"
 			
 
@@ -42,7 +42,7 @@ $(LIBFT):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 				@mkdir -p $(dir $@)
-				$(CC) $(CFLAGS) -c $< -o $@
+				@$(CC) $(CFLAGS) -c $< -o $@
 $(MLX):
 				@make -C $(MLX_DIR)
 				@echo "$(MLX): $(GREEN)$(MLX) was compiled.$(RESET)"

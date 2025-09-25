@@ -94,14 +94,19 @@ void move_player(t_player *player)
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
 
+    // Rotación
     if (player->left_rotate)
         player->angle -= angle_speed;
     if (player->right_rotate)
         player->angle += angle_speed;
+
+    // Normalizar ángulo entre 0 y 2π
     if (player->angle > 2 * PI)
-        player->angle = 0;
+        player->angle -= 2 * PI;
     if (player->angle < 0)
-        player->angle = 2 * PI;
+        player->angle += 2 * PI;
+
+    // Movimiento adelante/atrás
     if (player->key_up)
     {
         player->pos_x += cos_angle * speed;
@@ -112,17 +117,20 @@ void move_player(t_player *player)
         player->pos_x -= cos_angle * speed;
         player->pos_y -= sin_angle * speed;
     }
+
+    // Movimiento lateral (strafe)
     if (player->key_left)
-    {
-        player->pos_x += sin_angle * speed;
-        player->pos_y -= cos_angle * speed;
-    }
-    if (player->key_right)
     {
         player->pos_x -= sin_angle * speed;
         player->pos_y += cos_angle * speed;
     }
+    if (player->key_right)
+    {
+        player->pos_x += sin_angle * speed;
+        player->pos_y -= cos_angle * speed;
+    }
 }
+
 
 void put_pixel(int x, int y, int color, t_data *data) //dibuja pixel con el color dado
 {
@@ -210,12 +218,40 @@ void draw_map(t_data *data)
     }
 }
 
+bool touch(float px, float py, t_data *data)
+{
+    int x;
+    int y;
+
+    x = px / BLOCK;
+    y = py / BLOCK;
+    if(data->map->coords[y][x] == '1')
+        return true;
+    return false;
+}
+
 int draw_loop(t_data *data)
 {
-	move_player(data->map->player);
+    t_player *player = data->map->player;
+    float ray_x;
+    float ray_y;
+    float cos_angle;
+    float sin_angle;
+
+	move_player(player);
 	clear_image(data);
-	draw_square(data->map->player->pos_x, data->map ->player->pos_y, 10, 0x00FF00, data);
+    draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, data);
 	draw_map(data);
+	ray_x = player->pos_x;
+    ray_y = player->pos_y;
+    cos_angle = cos(player->angle);
+    sin_angle = sin(player->angle);
+    while(!touch(ray_x, ray_y, data))
+    {
+        put_pixel(ray_x, ray_y, 0xFF0000, data);
+        ray_x += cos_angle;
+        ray_y += sin_angle;
+    }
     mlx_put_image_to_window(data->mlx, data->win, data->img, 0, 0);
 	return (0);
 }
