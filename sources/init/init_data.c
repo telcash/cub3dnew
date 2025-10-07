@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: dfernan3 <dfernan3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/22 10:04:47 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/24 17:19:33 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:36:43 by dfernan3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static t_player *init_player()
     player->dir_y = 0.0;
     player->plane_x = 0.0;
     player->plane_y = 0.0;
-    player->angle = PI / 2;
+    player->angle = 0;
     player->key_up = false;
     player->key_down = false;
     player->key_left = false;

@@ -6,7 +6,7 @@
 /*   By: dfernan3 <dfernan3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 08:15:16 by carlossalaz       #+#    #+#             */
-/*   Updated: 2025/10/07 17:54:27 by dfernan3         ###   ########.fr       */
+/*   Updated: 2025/10/07 19:15:01 by dfernan3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void set_player_init_pos(t_data *data)
         data->map->player->dir_y = 0.0;
         data->map->player->plane_x = 0.0;
         data->map->player->plane_y = 0.66;
+        data->map->player->angle = 3 * PI / 2;
     }        
     else if (data->map->player->view == 'S')
     {
@@ -34,6 +35,7 @@ void set_player_init_pos(t_data *data)
         data->map->player->dir_y = 0.0;
         data->map->player->plane_x = 0.0;
         data->map->player->plane_y = -0.66;
+        data->map->player->angle = PI / 2;
     }
     else if (data->map->player->view == 'E')
     {
@@ -41,6 +43,7 @@ void set_player_init_pos(t_data *data)
         data->map->player->dir_y = 1.0;
         data->map->player->plane_x = 0.66;
         data->map->player->plane_y = 0.0;
+        data->map->player->angle = 0;
     }
     else if (data->map->player->view == 'W')
     {
@@ -48,6 +51,7 @@ void set_player_init_pos(t_data *data)
         data->map->player->dir_y = -1.0;
         data->map->player->plane_x = -0.66;
         data->map->player->plane_y = 0.0;
+        data->map->player->angle = PI;
     }
 }
 
@@ -89,7 +93,7 @@ int key_realase(int keycode, t_data *data)
 
 void move_player(t_player *player)
 {
-    int speed = 3;
+    float speed = 0.3;
     float angle_speed = 0.03;
     float cos_angle = cos(player->angle);
     float sin_angle = sin(player->angle);
@@ -229,13 +233,11 @@ bool touch(float px, float py, t_data *data)
     int x = px / BLOCK;
     int y = py / BLOCK;
 
-    // Check bounds
     if (y < 0 || !data->map->coords[y])
         return true;
     int row_len = ft_strlen(data->map->coords[y]);
     if (x < 0 || x >= row_len)
         return true;
-
     if (data->map->coords[y][x] == '1')
         return true;
     return false;
@@ -244,29 +246,31 @@ bool touch(float px, float py, t_data *data)
 // raycasting functions
 void draw_line(t_player *player, t_data *data, float start_x, int i)
 {
-    float ray_x;
-    float ray_y;
-    float cos_angle;
-    float sin_angle;
+    float ray_x = player->pos_x;
+    float ray_y = player->pos_y;
+    float cos_angle = cos(start_x);
+    float sin_angle = sin(start_x);
 
-    ray_x = player->pos_x;
-    ray_y = player->pos_y;
-    cos_angle = cos(start_x);
-    sin_angle = sin(start_x);
-    while(!touch(ray_x, ray_y, data))
+    while (!touch(ray_x * BLOCK, ray_y * BLOCK, data))
     {
         if (DEBUG)
-            put_pixel(ray_x, ray_y, 0xFF0000, data);
-        ray_x += cos_angle;
-        ray_y += sin_angle;
+        {
+            for (int dx = -1; dx <= 1; dx++)
+                for (int dy = -1; dy <= 1; dy++)
+                    put_pixel(ray_x * BLOCK + dx, ray_y * BLOCK + dy, 0xFF0000, data);
+        }
+        ray_x += cos_angle * 0.05;
+        ray_y += sin_angle * 0.05;
     }
-    if(!DEBUG)
+    if (!DEBUG)
     {
+        draw_square(player->pos_x * BLOCK, player->pos_y * BLOCK, 10, 0x00FF00, data); //quitar
+        draw_map(data);
         float dist = fixed_dist(player->pos_x, player->pos_y, ray_x, ray_y, data);
-        float height = (BLOCK / dist) * (WIDTH / 2);
+        float height = (BLOCK * HEIGHT) / dist;
         int start_y = (HEIGHT - height) / 2;
         int end = start_y + height;
-        while(start_y < end)
+        while (start_y < end)
         {
             put_pixel(i, start_y, 255, data);
             start_y++;
@@ -285,7 +289,7 @@ int draw_loop(t_data *data)
 	clear_image(data);
     if (DEBUG)
     {
-        draw_square(player->pos_x, player->pos_y, 10, 0x00FF00, data);
+        draw_square(player->pos_x * BLOCK, player->pos_y * BLOCK, 10, 0x00FF00, data);
         draw_map(data);
     }
     fraction = PI / 3 / WIDTH;

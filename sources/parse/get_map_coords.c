@@ -6,7 +6,7 @@
 /*   By: dfernan3 <dfernan3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 14:09:49 by csalazar          #+#    #+#             */
-/*   Updated: 2025/10/07 17:51:41 by dfernan3         ###   ########.fr       */
+/*   Updated: 2025/10/07 18:12:37 by dfernan3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,20 @@ int get_map_coords(t_map *map, char *file)
     if (!map->coords)
         return (ft_putendl_fd(ERR_MALLOC_DATA, 2), 1);
     copy_map_coords(map, fd);
+    
+    // Asignar posición inicial del jugador (solo la primera encontrada)
+    bool found = false;
+    for (int i = 0; map->coords[i] && !found; i++) {
+        for (int j = 0; map->coords[i][j] && !found; j++) {
+            if (map->coords[i][j] == 'N' || map->coords[i][j] == 'S' ||
+                map->coords[i][j] == 'E' || map->coords[i][j] == 'W') {
+                map->player->row = i;
+                map->player->col = j;
+                map->player->view = map->coords[i][j];
+                found = true;
+            }
+        }
+    }
     if (verify_map_borders(map))
         return (ft_putendl_fd(OPEN_MAP, 2), 1);
     // if (verify_map_nav(map))
