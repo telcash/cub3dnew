@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_map_coords.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: carlossalazar <carlossalazar@student.42    +#+  +:+       +#+        */
+/*   By: dfernan3 <dfernan3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/25 14:09:49 by csalazar          #+#    #+#             */
-/*   Updated: 2025/09/23 09:46:02 by carlossalaz      ###   ########.fr       */
+/*   Updated: 2025/10/07 17:51:41 by dfernan3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,32 +56,32 @@ static int verify_map_nav(t_map *map)
 
 } */
 
-static void flood_fill(t_map *map, int row, int col, int *i)
-{
-    if (row < 0  || row > (int)map->h - 2 || col < 0 || col > (int)ft_strlen(map->coords[row]) - 2)
-        return ;
-    if (map->coords[row][col] == '0' || ft_is_coord(map->coords[row][col]))
-    {
-        map->coords[row][col] = '-';
-        (*i)++;
-        flood_fill(map, row - 1, col, i);
-        flood_fill(map, row + 1, col, i);
-        flood_fill(map, row, col - 1, i);
-        flood_fill(map, row, col + 1, i);
-    }
-}
+// static void flood_fill(t_map *map, int row, int col, int *i)
+// {
+//     if (row < 0  || row > (int)map->h - 2 || col < 0 || col > (int)ft_strlen(map->coords[row]) - 2)
+//         return ;
+//     if (map->coords[row][col] == '0' || ft_is_coord(map->coords[row][col]))
+//     {
+//         map->coords[row][col] = '-';
+//         (*i)++;
+//         flood_fill(map, row - 1, col, i);
+//         flood_fill(map, row + 1, col, i);
+//         flood_fill(map, row, col - 1, i);
+//         flood_fill(map, row, col + 1, i);
+//     }
+// }
 
-static int verify_map_nav(t_map *map)
-{
-    int i;
+// static int verify_map_nav(t_map *map)
+// {
+//     int i;
 
-    i= 0;
+//     i= 0;
 
-    flood_fill(map, map->player->row, map->player->col, &i);
-    if (i < map->num_spaces)
-        return (1);
-    return (0);
-}
+//     flood_fill(map, map->player->row, map->player->col, &i);
+//     if (i < map->num_spaces)
+//         return (1);
+//     return (0);
+// }
 
 static int verify_map_borders(t_map *map)
 {
@@ -149,7 +149,7 @@ int get_map_coords(t_map *map, char *file)
     copy_map_coords(map, fd);
     if (verify_map_borders(map))
         return (ft_putendl_fd(OPEN_MAP, 2), 1);
-    if (verify_map_nav(map))
-        return (ft_putendl_fd(ERR_NAV_MAP, 2), 1);
+    // if (verify_map_nav(map))
+    //     return (ft_putendl_fd(ERR_NAV_MAP, 2), 1);
     return (close(fd), 0);
 }

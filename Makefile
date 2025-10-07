@@ -5,7 +5,7 @@ RED				= \033[0;31m
 RESET			= \033[0m
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) -I$(MLX_DIR) #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -I$(LIBFT_DIR) -I$(MLX_DIR) -fsanitize=address
 MINILIBX_FLAGS = -lmlx -lX11 -lXext -lm
 #MINILIBX_FLAGS = -L$(MLX_DIR) -lmlx -framework OpenGL -framework AppKit
 #VALGRIND = valgrind --leak-check=full --show-leak-kinds=all \

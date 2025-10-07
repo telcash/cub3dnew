@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_game.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: csalazar <csalazar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: dfernan3 <dfernan3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 08:15:16 by carlossalaz       #+#    #+#             */
-/*   Updated: 2025/09/24 17:35:31 by csalazar         ###   ########.fr       */
+/*   Updated: 2025/10/07 17:54:27 by dfernan3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -191,19 +191,6 @@ void draw_square(int x, int y, int size, int color, t_data *data) //dibuja un cu
 	}
 }
 
-float distance(float x, float y){
-    return sqrt(x * x + y * y);
-}
-
-float fixed_dist(float x1, float y1, float x2, float y2, t_data *data)
-{
-    float delta_x = x2 - x1;
-    float delta_y = y2 - y1;
-    float angle = atan2(delta_y, delta_x) - data->map->player->angle;
-    float fix_dist = distance(delta_x, delta_y) * cos(angle);
-    return fix_dist;
-}
-
 void draw_map(t_data *data)
 {
     char **map = data->map->coords;
@@ -223,14 +210,33 @@ void draw_map(t_data *data)
     }
 }
 
+float distance(float x, float y){
+    return sqrt(x * x + y * y);
+}
+
+float fixed_dist(float x1, float y1, float x2, float y2, t_data *data)
+{
+    float delta_x = x2 - x1;
+    float delta_y = y2 - y1;
+    float angle = atan2(delta_y, delta_x) - data->map->player->angle;
+    float fix_dist = distance(delta_x, delta_y) * cos(angle);
+    return fix_dist;
+}
+
+
 bool touch(float px, float py, t_data *data)
 {
-    int x;
-    int y;
+    int x = px / BLOCK;
+    int y = py / BLOCK;
 
-    x = px / BLOCK;
-    y = py / BLOCK;
-    if(data->map->coords[y][x] == '1')
+    // Check bounds
+    if (y < 0 || !data->map->coords[y])
+        return true;
+    int row_len = ft_strlen(data->map->coords[y]);
+    if (x < 0 || x >= row_len)
+        return true;
+
+    if (data->map->coords[y][x] == '1')
         return true;
     return false;
 }
